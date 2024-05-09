@@ -1,0 +1,35 @@
+Adam
+Learning Rate: 0.001, Epochs: 30, Batch Size: 32
+Learning Rate: 0.003, Epochs: 50, Batch Size: 64
+Learning Rate: 0.01, Epochs: 20, Batch Size: 128
+Learning Rate: 0.005, Epochs: 60, Batch Size: 16
+Learning Rate: 0.02, Epochs: 40, Batch Size: 48
+Learning Rate: 0.007, Epochs: 70, Batch Size: 80
+Learning Rate: 0.03, Epochs: 10, Batch Size: 96
+Learning Rate: 0.015, Epochs: 85, Batch Size: 24
+Learning Rate: 0.05, Epochs: 15, Batch Size: 72
+Learning Rate: 0.09, Epochs: 25, Batch Size: 40
+
+SGD
+Learning Rate: 0.01, Momentum: 0.9, Epochs: 30, Batch Size: 32
+Learning Rate: 0.03, Momentum: 0.8, Epochs: 50, Batch Size: 64
+Learning Rate: 0.005, Momentum: 0.7, Epochs: 20, Batch Size: 128
+Learning Rate: 0.02, Momentum: 0.95, Epochs: 60, Batch Size: 16
+Learning Rate: 0.001, Momentum: 0.85, Epochs: 40, Batch Size: 48
+Learning Rate: 0.04, Momentum: 0.6, Epochs: 70, Batch Size: 80
+Learning Rate: 0.007, Momentum: 0.99, Epochs: 10, Batch Size: 96
+Learning Rate: 0.05, Momentum: 0.75, Epochs: 85, Batch Size: 24
+Learning Rate: 0.08, Momentum: 0.88, Epochs: 15, Batch Size: 72
+Learning Rate: 0.09, Momentum: 0.65, Epochs: 25, Batch Size: 40
+
+RMSprop
+Learning Rate: 0.001, Decay: 0.9, Epsilon: 1e-7, Epochs: 30, Batch Size: 32
+Learning Rate: 0.003, Decay: 0.8, Epsilon: 1e-8, Epochs: 50, Batch Size: 64
+Learning Rate: 0.01, Decay: 0.7, Epsilon: 1e-6, Epochs: 20, Batch Size: 128
+Learning Rate: 0.005, Decay: 0.95, Epsilon: 1e-9, Epochs: 60, Batch Size: 16
+Learning Rate: 0.02, Decay: 0.85, Epsilon: 1e-5, Epochs: 40, Batch Size: 48
+Learning Rate: 0.007, Decay: 0.6, Epsilon: 1e-4, Epochs: 70, Batch Size: 80
+Learning Rate: 0.03, Decay: 0.99, Epsilon: 1e-3, Epochs: 10, Batch Size: 96
+Learning Rate: 0.05, Decay: 0.75, Epsilon: 1e-2, Epochs: 85, Batch Size: 24
+Learning Rate: 0.08, Decay: 0.88, Epsilon: 1e-1, Epochs: 15, Batch Size: 72
+Learning Rate: 0.09, Decay: 0.65, Epsilon: 5e-1, Epochs: 25, Batch Size: 40
