@@ -64,8 +64,11 @@ def edit_cell(window, key, row, col, justify='left'):
         widget.master.destroy()
         print(row)
         values = list(table.item(row, 'values'))
-        values[col] = str(text)
-        data[row-1] = str(text)
+        values[col] = text
+        try:
+            data[row-1][col] = text
+        except:
+            print("Out of bounds")
         print(data)
   
         table.item(row, values=values)
@@ -150,16 +153,17 @@ def generate_table():
         #tablecrop.CropNumbers()
         #preprocess.preprocess(working_directory)
         data = add_comma(predict_Model(tf.keras.models.load_model('Models/SGD_batch64_epoch50_learning_rate_0.03_momentum0.8_.model'), working_directory))
-        numbers = []
-        for d in data:
-            try:
-                # Attempt to convert the string to float
-                converted_value = float(d)
-                print(converted_value) 
-                numbers.append(d)
-            except ValueError:
-                print("Could not convert the string to a float.")
-        window['-TABLE-'].update(values=numbers)
+        data = [[element] for element in data]
+        # numbers = []
+        # for d in data:
+        #     try:
+        #         # Attempt to convert the string to float
+        #         converted_value = float(d)
+        #         print(converted_value) 
+        #         numbers.append(d)
+        #     except ValueError:
+        #         print("Could not convert the string to a float.")
+        window['-TABLE-'].update(values=data)
         
       elif event == "Save":
             filename = psg.popup_get_file('Save as', save_as=True, file_types=(("CSV Files", "*.csv"),))
@@ -169,7 +173,7 @@ def generate_table():
                     headings = [heading_value]
                     writer = csv.writer(csvfile)
                     writer.writerow(headings)
-                    writer.writerows([data])
+                    writer.writerows(data)
             psg.popup('Saved')
       elif isinstance(event,tuple):
          if isinstance(event[2][0], int) and event[2][0]>-1:
