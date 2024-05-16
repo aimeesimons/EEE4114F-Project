@@ -2,7 +2,10 @@ import cv2
 import imutils
 from imutils import contours as cont
 import numpy as np
-
+'''
+This code was predominantly sourced from a public GitHub repo. 
+https://github.com/imneonizer/Crop-Rows-From-Tables-using-OpenCV-and-Python/blob/master/crop-cells/extract_cells.py
+'''
 def imshow(title, image, width=800):
     cv2.imshow(title, imutils.resize(image, width=width))
     cv2.waitKey(0)
@@ -51,7 +54,7 @@ def over_draw_boxes(img_bin):
 
 
 def CropNumbers():
-    img = cv2.imread("Original_table.png")
+    img = cv2.imread("Input_table.png") # input image
 
     #resizing image
     img = imutils.resize(img, width=2564)
@@ -64,8 +67,8 @@ def CropNumbers():
     contours, hierachy= cv2.findContours(boxes, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     #_, contours, _ = cv2.findContours(boxes, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    (contours, boundingBoxes) = cont.sort_contours(contours, method="left-to-right")
-    (contours, boundingBoxes) = cont.sort_contours(contours, method="top-to-bottom")
+    (contours, boundingBoxes) = cont.sort_contours(contours, method="left-to-right") # sort contours from left to right
+    (contours, boundingBoxes) = cont.sort_contours(contours, method="top-to-bottom") # sort contours from top to bottom
 
     idx = 0
     for cnt in contours:
@@ -90,8 +93,7 @@ def CropNumbers():
 
             #cropped cell
             cell = img_original[y:y+h, x:x+w]
-            cv2.imwrite("GUI_DSP/"+str(idx)+".jpg", cell)
+            cv2.imwrite("GUI_DSP/"+str(idx)+".jpg", cell) #save cropped image
 
             #imshow("image", img)
             idx+=1
-CropNumbers()

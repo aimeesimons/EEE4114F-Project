@@ -3,8 +3,8 @@ import PySimpleGUI as sg
 import csv,os
 import random
 import pandas as pd
-#import tableDetect
-#import tablecrop
+import tableDetect
+import tablecrop
 import cv2
 import numpy as np
 import preprocess
@@ -13,6 +13,9 @@ import tensorflow as tf
 
 
 def predict_Model(model, directory):
+    '''
+    This function applies the model to all the processed images
+    '''
     number = ''
     i=0
     numbers = []
@@ -37,6 +40,9 @@ def predict_Model(model, directory):
     return numbers
 
 def add_comma(numbers):
+    '''
+    This function takes in an array of string 'numbers' and inserts a decimal point in the correct position
+    '''
     deci_numbers = []
     for number in numbers:
         if len(number)<6:
@@ -66,7 +72,7 @@ def edit_cell(window, key, row, col, justify='left'):
         values = list(table.item(row, 'values'))
         values[col] = text
         try:
-            data[row-1][col] = text
+            data[row-1][col] = text # assigned edited text to the array
         except:
             print("Out of bounds")
         print(data)
@@ -111,12 +117,31 @@ def generate_table():
    temp_headings = ['Data']
    
    working_directory = os.getcwd();
+   directory1 = 'GUI_DSP'
+   directory2 = 'converted'
+
+   path = os.path.join(working_directory,directory1) 
+   if os.path.exists(path): # if the directory exists
+       for item in os.listdir(path):
+        if os.path.isfile(os.path.join(path, item)):
+            os.remove(os.path.join(path, item)) # remove all the items
+   else:
+       os.mkdir(path) # or create the folder
+
+
+   path = os.path.join(working_directory,directory2)
+   if os.path.exists(path): # if the directory exists
+        for item in os.listdir(path):
+            if os.path.isfile(os.path.join(path, item)):
+                os.remove(os.path.join(path, item)) # remove all the items
+   else:
+       os.mkdir(path) # or create the folder
 
    sg.set_options(dpi_awareness= True)
    layout = [
       [psg.Text('Choose an input file:', font=('Arial Bold', 10), size=(20, 1), justification='left')],
       [psg.InputText(key="-FILE_PATH-"), 
-      psg.FileBrowse(initial_folder=working_directory, file_types=[("All Picture Types", "*.pdf *.jpeg *.png")]), psg.Button("Submit")],
+      psg.FileBrowse(initial_folder=working_directory, file_types=[("All Picture Types", "*.pdf *.jpeg *.png *.jpg")]), psg.Button("Submit")],
       [psg.Text('Enter the heading:',  font=('Arial Bold', 10), size=(20, 1), justification='left')],
       [psg.InputText(key = '-HEADING-')],
       [psg.Text('Click blocks to edit data:',  font=('Arial Bold', 10), size=(20, 1), justification='left'), psg.Push(), psg.Button(("Save"))],
@@ -145,24 +170,16 @@ def generate_table():
          break
       elif event == "Submit":
         pdf_address = value["-FILE_PATH-"]
-        # if "png" in pdf_address or "jpg" in pdf_address:
-        #     tableDetect.OutlineTable(pdf_address)
-        # else:
-        #     (tableDetect.OutlineTable(tableDetect.convertPdftoImage(pdf_address)))
 
-        #tablecrop.CropNumbers()
-        #preprocess.preprocess(working_directory)
-        data = add_comma(predict_Model(tf.keras.models.load_model('Models/SGD_batch64_epoch50_learning_rate_0.03_momentum0.8_.model'), working_directory))
-        data = [[element] for element in data]
-        # numbers = []
-        # for d in data:
-        #     try:
-        #         # Attempt to convert the string to float
-        #         converted_value = float(d)
-        #         print(converted_value) 
-        #         numbers.append(d)
-        #     except ValueError:
-        #         print("Could not convert the string to a float.")
+        if "png" in pdf_address or "jpg" in pdf_address: # if image is inputted
+            tableDetect.OutlineTable(pdf_address)
+        else:
+            (tableDetect.OutlineTable(tableDetect.convertPdftoImage(pdf_address))) # if pdf is inputted
+
+        tablecrop.CropNumbers() # crop the numbers
+        preprocess.preprocess(working_directory) #preprocess the numbers
+        data = add_comma(predict_Model(tf.keras.models.load_model('Models/SGD_batch64_epoch50_learning_rate_0.03_momentum0.8_.model'), working_directory)) # output the array of numbers
+        data = [[element] for element in data] # make each element its own list
         window['-TABLE-'].update(values=data)
         
       elif event == "Save":
@@ -173,7 +190,7 @@ def generate_table():
                     headings = [heading_value]
                     writer = csv.writer(csvfile)
                     writer.writerow(headings)
-                    writer.writerows(data)
+                    writer.writerows(data) # write to csv file
             psg.popup('Saved')
       elif isinstance(event,tuple):
          if isinstance(event[2][0], int) and event[2][0]>-1:
@@ -182,5 +199,7 @@ def generate_table():
          edit_cell(window, '-TABLE-', row+1, col, justify='right')
    window.close()
    
-generate_table()
+
+if __name__ == "__main__":
+    generate_table()
       

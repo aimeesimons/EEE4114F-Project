@@ -8,14 +8,17 @@ import matplotlib.pyplot as plt
 
 
 def convertPdftoImage(filename, image_path):
-    # STEP 2
+    '''
+    This function inputs a PDF file, converts it to an image, and then returns the filepath
+    '''
+   
     # file path you want to extract images from
     file = filename
 
     # open the file
     pdf_document = fitz.open(file)
-    # STEP 3
-            # Get the page
+
+    # Get the page
     page = pdf_document.load_page(0)
     
     # Convert the page to an image
@@ -32,6 +35,9 @@ def convertPdftoImage(filename, image_path):
 # convertPdftoImage("NumbersTemp1.pdf","page_%d.png" )
 # Load image, grayscale, Gaussian blur, Canny edge detection
 def OutlineTable(filename):
+    '''
+    This function attempts to outline the table with a rectangle and preprocess the image before cropping
+    '''
     image = cv2.imread(filename)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     darkened_image = np.clip(gray* 0.8, 0, 255).astype(np.uint8)  # Multiply by 0.7 to darken
@@ -46,7 +52,7 @@ def OutlineTable(filename):
     contours = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = contours[0] if len(contours) ==2 else contours[1]
     colour = (255,0,0)
-    thickness = 1
+    thickness = 2
     # i = 0
     # arrX1 = np.zeros(shape=len(contours),dtype=int)
     # arrX2 = np.zeros(shape=len(contours),dtype=int)
@@ -68,7 +74,7 @@ def OutlineTable(filename):
             # arrX2[i] = x2
             # arrY1[i] = y1
             # arrY2[i] = y2
-            cv2.rectangle(gray, (x1, y1), (x2, y2), colour, thickness)
+            cv2.rectangle(gray, (x1, y1), (x2, y2), colour, thickness) # draw rectangle
             # i+=1
 
     # sorted_X1 = arrX1.sort()
@@ -81,9 +87,7 @@ def OutlineTable(filename):
     #         cropped = image[arrY1[i]:arrY2[i],arrX1[i]:arrX2[i]]
     #         cv2.imwrite(f"Cropped {i+1}.png", cropped)
 
-    cv2.imwrite("Input_table.png", gray)
+    cv2.imwrite("Input_table.png", gray) #save image
     cv2.imshow("Input_table", gray)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-# OutlineTable("Testing Data\IMG_20240424_0009.jpg")
