@@ -7,7 +7,7 @@ There are 3 main folders in this repo:
 * Testing Data (All collected data)
 
 ## Model Creation and Testing
-This folder consists of the Jupyter Notebook used to create the model as well as the testing combinations.\\
+This folder consists of the Jupyter Notebook used to create the model as well as the testing combinations.
 It also contains the model evaluation results, and all the created models. 
 
 ## Processing
